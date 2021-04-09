@@ -24,7 +24,7 @@ module.exports = appInfo => {
     apiInfo: {
       title: '测试文档',
       description: '用于测试 swagger',
-      version: '1.0.0'
+      version: '1.0.0',
     },
     schemes: [ 'http', 'https' ],
     consumes: [ 'application/json' ],
@@ -44,10 +44,10 @@ module.exports = appInfo => {
       reconnectTries: Number.MAX_VALUE,
       bufferMaxEntries: 0,
       // mongoose 验证
-      auth: { authSource: 'admin' },
+      auth: {authSource: 'admin'},
       user: 'novias',
       pass: '123456',
-    }
+    },
   };
 
   config.jwt = {

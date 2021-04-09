@@ -8,26 +8,26 @@ module.exports = {
   // }
   swaggerdoc: {
     enable: true,
-    package: 'egg-swagger-doc-feat'
+    package: 'egg-swagger-doc-feat',
   },
 
   validate: {
     enable: true,
-    package: 'egg-validate'
+    package: 'egg-validate',
   },
 
   mongoose: {
-    enabled: true,
-    package: 'egg-mongoose'
+    enable: true,
+    package: 'egg-mongoose',
   },
 
   bcrypt: {
-    enabled: true,
-    package: 'egg-bcrypt'
+    enable: true,
+    package: 'egg-bcrypt',
   },
 
   jwt: {
-    enabled: true,
-    package: 'egg-jwt'
-  }
+    enable: true,
+    package: 'egg-jwt',
+  },
 };

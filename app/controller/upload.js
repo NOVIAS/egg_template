@@ -9,6 +9,7 @@ const download = require('image-downloader');
  * @Controller 上传文件
  */
 class UploadController extends Controller {
+  // eslint-disable-next-line no-useless-constructor
   constructor(ctx) {
     super(ctx);
   }

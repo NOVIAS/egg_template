@@ -1,3 +1,4 @@
+'use strict';
 const { Service } = require('egg');
 
 class ActionTokenService extends Service {
@@ -7,7 +8,7 @@ class ActionTokenService extends Service {
       data: {
         _id,
       },
-      exp: Math.floor(Date.now() / 1000 + (60 * 60 * 24 * 7))
+      exp: Math.floor(Date.now() / 1000 + (60 * 60 * 24 * 7)),
     }, ctx.app.config.jwt.secret);
   }
 }

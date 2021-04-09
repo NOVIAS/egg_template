@@ -1,8 +1,9 @@
+'use strict';
 /**
  * 接口错误异常处理
  */
 module.exports = (options, app) => {
-  return async function(ctx, next) {
+  return async function (ctx, next) {
     try {
       await next();
     } catch (err) {
