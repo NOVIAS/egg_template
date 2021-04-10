@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试部分</title>
+</head>
+<body>
+<h4 class="info"></h4>
+<nav>
+    <button class="login">用户登录</button>
+    <button class="logout">用户登出</button>
+    <button class="show_user">查询用户信息</button>
+</nav>
+</body>
+<script type="module">
+    import {postData} from './fetch.mjs';
+
+    const userInfo = document.querySelector('.info');
+    const login = document.querySelector('.login');
+    const logout = document.querySelector('.logout');
+    const showUser = document.querySelector('.show_user');
+    login.addEventListener('click', (e) => {
+        const url = 'http://localhost:7001/auth/jwt/login';
+        postData(url, {mobile: '17565482158', password: '1111111'}, 'POST')
+            .then((res) => {
+                // 因为 fetch 不能响应 400-500 的错误,所以这里要进行一次判断
+                if (res.ok && res.status === 200) {
+                    return res.json();
+                } else {
+                    userInfo.innerText = '网络错误';
+                }
+            }).then(res => {
+            if (res.code === 200) {
+                userInfo.innerText = '用户登录成功~';
+                window.localStorage.setItem('token', res.data.token);
+            } else {
+                userInfo.innerText = '用户登录失败';
+            }
+        })
+    })
+    logout.addEventListener('click', (e) => {
+        const url = 'http://localhost:7001/auth/jwt/logout';
+        postData(url, {}, 'POST').then((res) => {
+            if (res.ok && res.status === 200) {
+                return res.json();
+            } else {
+                userInfo.innerText = '网络错误'
+            }
+        }).then((res) => {
+            if (res.code === 200) {
+                userInfo.innerText = '退出登录成功~';
+                window.localStorage.removeItem('token');
+            } else {
+                userInfo.innerText = '用户登录失败';
+            }
+        })
+
+    })
+    showUser.addEventListener('click', (e) => {
+        const url = 'http://localhost:7001/auth/jwt/show';
+        const token = window.localStorage.getItem('token');
+        postData(url, null, 'GET', token).then((res) => {
+            if (res.ok && res.status === 200) {
+                return res.json();
+            } else {
+                userInfo.innerText = '网络错误';
+            }
+        }).then(res => {
+            if (res.code !== 200) {
+                userInfo.innerText = res.error;
+            } else {
+                console.log(res);
+                userInfo.innerText = JSON.stringify(res.data);
+            }
+        })
+    })
+</script>
+</html>
