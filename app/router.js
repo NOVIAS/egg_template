@@ -14,5 +14,5 @@ module.exports = app => {
   router.post('/auth/jwt/logout', controller.userAccess.logout);
   // 不使用正则, 需要验证的路由加入 jwt
   router.get('/auth/jwt/show', jwt, controller.userAccess.showUser);
-  router.post('/auth/upload/single', jwt, controller.upload.upload);
+  router.post('/api/upload/single', controller.upload.upload);
 };

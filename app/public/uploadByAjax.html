@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>上传文件Ajax</title>
+</head>
+<body>
+<h4 class="info"></h4>
+<div>
+    <input type='file' name="file" accept=".png, .jpg, .jpeg">
+    <p>效果 400 * 400 压缩</p>
+    <canvas class='canvas'></canvas>
+</div>
+<button class="btn"> 上传图片</button>
+</body>
+<script>
+    const canvas = document.querySelector('.canvas');
+    const ctx = canvas.getContext('2d');
+    // 裁剪的目标长宽
+    const maxWidth = 400, maxHeight = 400;
+    const file = document.querySelector("input[type=file]");
+    const info = document.querySelector('.info');
+    const btn = document.querySelector('.btn');
+
+    //  使用 FileReader 接口获取文件 base64
+    const reader = new FileReader();
+    //  创造图像对象
+    const img = new Image();
+    //  用来保存实例
+    let fileImg;
+
+    // 绑定文件选择事件
+    file.addEventListener('change', updateImageDisplay);
+
+    // 绑定文件转码完成事件
+    reader.onload = (e) => {
+        // 读取完毕后, 开始绘制
+        img.src = e.target.result;
+    }
+
+    // 绑定 img 加载完成事件
+    img.onload = function () {
+        // 对文件的长宽进行裁剪
+        let originWidth = this.width;
+        let originHeight = this.height;
+        let targetWidth, targetHeight;
+        // 对目标进行裁剪
+        if (originWidth > maxWidth || originHeight > maxHeight) {
+            // 判断用哪种标准来进行裁剪 (长 / 宽)
+            if (originWidth / maxWidth > originHeight / maxHeight) {
+                // 按照宽度裁剪
+                targetWidth = maxWidth;
+                targetHeight = Math.round(maxWidth * (originHeight / originWidth));
+            } else {
+                // 按照高度裁剪
+                targetHeight = maxHeight;
+                targetWidth = Math.round(maxHeight * (originWidth / originHeight));
+            }
+        } else {
+            // 长宽都没有超过限度
+            targetWidth = originWidth;
+            targetHeight = originHeight;
+        }
+        // 对 canvas 进行缩放
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+        // 预览图片
+        createImageDisplay(img, targetWidth, targetHeight);
+    }
+
+    function updateImageDisplay() {
+        if (checkImage(file.files[0])) {
+            fileImg = file.files[0];
+            // 讲文件转为 base64
+            reader.readAsDataURL(file.files[0]);
+        } else {
+            // 清空画布
+            ctx.clearRect(0, 0, maxWidth, maxHeight);
+            btn.removeEventListener('click', uploadImage);
+        }
+    }
+
+    // 上传事件
+    function uploadImage() {
+        const url = 'http://localhost:7001/api/upload/single';
+        let xhr;
+        if (window.XMLHttpRequest) {
+            xhr = new XMLHttpRequest();
+        } else {
+            xhr = new ActiveXObject('Microsoft.XMLHTTP');
+        }
+
+        // 获取canvas压缩的 Blob, 然后转回 file 上传
+        canvas.toBlob(function (blob) {
+            // !如果使用 formData 对象上传, 不需要在请求头加入 Content-Type: multipart/form-data
+            const formData = new FormData();
+            const file = new File([blob], fileImg.name, {type: fileImg.type});
+            formData.append('file', file, fileImg.name);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        // xhr.responseText就是返回的数据
+                        console.log(JSON.parse(xhr.response));
+                    }
+                }
+            };
+            xhr.open('POST', url, true);
+            xhr.send(formData);
+        }, fileImg.type || 'image/png');
+    }
+
+    // 图片预览
+    function createImageDisplay(img, width, height) {
+        // 清除画布
+        ctx.clearRect(0, 0, width, height);
+        // 绘制图像
+        ctx.drawImage(img, 0, 0, width, height);
+        // 绑定文件上传
+        btn.addEventListener('click', uploadImage);
+    }
+
+    // 图片类型检查
+    function checkImage(file) {
+        if (file && !file.type.startsWith('image/')) {
+            info.innerText = '上传的文件不是图片, 请重新选择!!';
+            return false;
+        } else {
+            info.innerText = '';
+            return true;
+        }
+    }
+</script>
+</html>
