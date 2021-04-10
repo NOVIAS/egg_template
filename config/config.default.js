@@ -53,8 +53,15 @@ module.exports = appInfo => {
   config.jwt = {
     secret: 'Gernerate_M',
     enabled: true,
-    // 对 api 开头的请求进行鉴权
-    match: /^\/auth/,
+    // 对匹配到的正则请求进行鉴权
+    // match: ,
+  };
+
+  config.cors = {
+    // {string|Function} origin: '*',
+    // {string|Array} allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH'
+    origin: '*',
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
   };
 
   // add your user config here

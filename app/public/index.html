@@ -5,6 +5,63 @@
     <title>测试部分</title>
 </head>
 <body>
-<h1> 哈哈哈哈 </h1>
+<h4 class="info"></h4>
+<nav>
+    <button class="login">用户登录</button>
+    <button class="logout">用户登出</button>
+    <button class="show_user">查询用户信息</button>
+</nav>
 </body>
+<script type="module">
+    import {XHR} from './ajax.mjs';
+
+    const query = XHR();
+    const userInfo = document.querySelector('.info');
+    const login = document.querySelector('.login');
+    const logout = document.querySelector('.logout');
+    const showUser = document.querySelector('.show_user');
+    login.addEventListener('click', (e) => {
+        const url = 'http://localhost:7001/auth/jwt/login';
+        // 异步
+        const xhr = query(url, {mobile: '17565482158', password: '1111111'}, 'POST');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status >= 200 & xhr.status < 400) {
+                    const res = JSON.parse(xhr.response);
+                    window.localStorage.setItem('token', res.data.token);
+                    userInfo.innerText = '登录成功~';
+                }
+            }
+        };
+    })
+    logout.addEventListener('click', (e) => {
+        const url = 'http://localhost:7001/auth/jwt/logout';
+        const xhr = query(url, {}, 'POST');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status >= 200 & xhr.status < 400) {
+                    window.localStorage.removeItem('token');
+                    userInfo.innerText = '退出登录成功~';
+                }
+            }
+        };
+    })
+    showUser.addEventListener('click', (e) => {
+        const url = 'http://localhost:7001/auth/jwt/show';
+        const token = window.localStorage.getItem('token');
+        const xhr = query(url, {}, 'GET', token);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status >= 200 & xhr.status < 400) {
+                    const res = JSON.parse(xhr.response);
+                    if (res.code !== 200) {
+                        userInfo.innerText = res.error;
+                    } else {
+                        userInfo.innerText = JSON.stringify(res.data);
+                    }
+                }
+            }
+        }
+    })
+</script>
 </html>

@@ -67,6 +67,17 @@ class UserService extends Service {
     const user = await ctx.model.User.findOne({_id});
     return user;
   }
+
+  /**
+   * @description 查询用户手机号
+   * @param mobile 用户手机号
+   * @return {Promise<void>}
+   */
+  async findByMobile(_mobile) {
+    const {ctx} = this;
+    const user = await ctx.model.User.findOne({mobile: _mobile});
+    return user;
+  }
 }
 
 module.exports = UserService;

@@ -56,7 +56,6 @@ class UserController extends Controller {
 
     // 进行接口验证
     ctx.validate(ctx.rule.updateUserRequest);
-
     const payload = ctx.request.body || {};
     const data = await service.user.update(payload);
     // 设置响应内容和状态码
