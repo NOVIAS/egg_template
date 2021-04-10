@@ -15,7 +15,9 @@ export function XHR() {
         if (token) {
             xhr.setRequestHeader('Authorization', `Bearer ${token}`)
         }
-        xhr.send(JSON.stringify(data))
+        // 如果需要传输 Cookie 需要加入
+        xhr.withCredentials = true;
+        xhr.send(JSON.stringify(data));
         return xhr
     }
 

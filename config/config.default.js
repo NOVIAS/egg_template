@@ -60,8 +60,21 @@ module.exports = appInfo => {
   config.cors = {
     // {string|Function} origin: '*',
     // {string|Array} allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH'
-    origin: '*',
+    // 允许所有跨域访问, 注释掉则允许下面的白名单访问
+    // origin: '*',
     allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
+    // 允许携带 cookie
+    credentials: true,
+  };
+
+  config.security = {
+    csrf: {
+      // 前后端分离，post请求不方便携带 csrf
+      enabled: false,
+      ignoreJSON: true,
+    },
+    // 允许跨域的白名单
+    domainWhiteList: ['http://localhost:63342'],
   };
 
   // add your user config here
