@@ -44,7 +44,7 @@ module.exports = appInfo => {
       reconnectTries: Number.MAX_VALUE,
       bufferMaxEntries: 0,
       // mongoose 验证
-      auth: {authSource: 'admin'},
+      auth: { authSource: 'admin' },
       user: 'novias',
       pass: '123456',
     },
@@ -74,7 +74,7 @@ module.exports = appInfo => {
       ignoreJSON: true,
     },
     // 允许跨域的白名单
-    domainWhiteList: ['http://localhost:63342'],
+    domainWhiteList: [ 'http://localhost:63342' ],
   };
 
   // add your user config here
