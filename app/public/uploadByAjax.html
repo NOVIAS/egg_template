@@ -100,10 +100,22 @@
                 if (xhr.readyState === 4) {
                     if (xhr.status >= 200 && xhr.status < 300) {
                         // xhr.responseText就是返回的数据
-                        console.log(JSON.parse(xhr.response));
+                        xhr.addEventListener('load', (e) => {
+                            info.innerText = '上传完成'
+                        })
                     }
                 }
             };
+            // 获取上传进度
+            xhr.upload.addEventListener('progress', (e) => {
+                if (e.lengthComputable) {
+                    const percent = Math.round(e.loaded / e.total * 100);
+                    // 设置进度显示
+                    info.innerText = '上传进度' + percent + '%'
+                }
+            })
+            // 获取下载进度
+            // xhr.onprogress()
             xhr.open('POST', url, true);
             xhr.send(formData);
         }, fileImg.type || 'image/png');
