@@ -37,11 +37,11 @@ class UserController extends Controller {
    * @Response 200 baseResponse 删除成功
    */
   async remove() {
-    const {ctx, service} = this;
-    const {id} = ctx.params;
+    const { ctx, service } = this;
+    const { id } = ctx.params;
     const data = await service.user.remove(id);
     // 设置响应内容和状态码
-    ctx.helper.success({ctx, data});
+    ctx.helper.success({ ctx, data });
   }
 
   /**
@@ -52,14 +52,14 @@ class UserController extends Controller {
    * @Response 200 baseResponse 更新成功
    */
   async update() {
-    const {ctx, service} = this;
+    const { ctx, service } = this;
 
     // 进行接口验证
     ctx.validate(ctx.rule.updateUserRequest);
     const payload = ctx.request.body || {};
     const data = await service.user.update(payload);
     // 设置响应内容和状态码
-    ctx.helper.success({ctx, data});
+    ctx.helper.success({ ctx, data });
   }
 
   /**
@@ -69,10 +69,10 @@ class UserController extends Controller {
    * @Response 200 baseResponse 更新成功
    */
   async show() {
-    const {ctx, service} = this;
+    const { ctx, service } = this;
     const data = await service.user.showAll();
     // 设置响应内容和状态码
-    ctx.helper.success({ctx, data});
+    ctx.helper.success({ ctx, data });
   }
 }
 

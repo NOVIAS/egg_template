@@ -29,9 +29,9 @@ class UserAccessController extends Controller {
    * @response 200 baseResponse 登出成功
    */
   async logout() {
-    const {ctx, service} = this;
+    const { ctx, service } = this;
     await service.userAccess.logout();
-    ctx.helper.success({ctx});
+    ctx.helper.success({ ctx });
   }
 
   /**
@@ -42,7 +42,7 @@ class UserAccessController extends Controller {
    */
   async showUser() {
     // eslint-disable-next-line no-unused-vars
-    const {ctx, service} = this;
+    const { ctx, service } = this;
     // {
     //   data: { _id: '60708cbac4110905fc980556' },
     //   到期时间
@@ -51,10 +51,10 @@ class UserAccessController extends Controller {
     //   iat: 1618067740
     // }
     // 验证是否过期
-    const {data} = ctx.state.user;
+    const { data } = ctx.state.user;
     // ctx.state.user 可以提取到 JWT 编码的 data
     const user = await service.userAccess.current(data._id);
-    ctx.helper.success({ctx, data: user});
+    ctx.helper.success({ ctx, data: user });
   }
 }
 
