@@ -1,6 +1,7 @@
 /* eslint valid-jsdoc: "off" */
-
 'use strict';
+const path = require('path');
+const os = require('os');
 
 /**
  * @param {Egg.EggAppInfo} appInfo app info
@@ -69,12 +70,22 @@ module.exports = appInfo => {
 
   config.security = {
     csrf: {
-      // 前后端分离，post请求不方便携带 csrf
+      // 前后端分离，post 请求不方便携带 csrf
       enabled: false,
       ignoreJSON: true,
     },
     // 允许跨域的白名单
     domainWhiteList: [ 'http://localhost:63342' ],
+  };
+
+  // 设置文件的最大请求长度 默认为 10mb
+  config.multipart = {
+    // 启用 文件/ stream 模式
+    mode: 'stream',
+    // 先存放在临时目录, 当文件加载完成后再写入指定位置
+    // 只有在 file 模式下使用
+    // tmpdir: path.join(os.tmpdir(), 'egg-multipart-tmp', appInfo.name),
+    fileSize: '100000mb',
   };
 
   // add your user config here
