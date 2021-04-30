@@ -92,7 +92,7 @@
 
         // 获取canvas压缩的 Blob, 然后转回 file 上传
         canvas.toBlob(function (blob) {
-            // !如果使用 formData 对象上传, 不需要在请求头加入 Content-Type: multipart/form-data
+            // ! 如果使用 formData 对象上传, 不需要在请求头加入 Content-Type: multipart/form-data
             const formData = new FormData();
             const file = new File([blob], fileImg.name, {type: fileImg.type});
             formData.append('file', file, fileImg.name);

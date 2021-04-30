@@ -37,18 +37,18 @@ module.exports = appInfo => {
     enable: true,
   };
 
-  config.mongoose = {
-    url: 'mongodb://novias@192.168.244.128:27017/egg_simple',
-    options: {
-      autoReconnect: true,
-      reconnectTries: Number.MAX_VALUE,
-      bufferMaxEntries: 0,
-      // mongoose 验证
-      auth: { authSource: 'admin' },
-      user: 'novias',
-      pass: '123456',
-    },
-  };
+  // config.mongoose = {
+  //   url: 'mongodb://novias@192.168.244.128:27017/egg_simple',
+  //   options: {
+  //     autoReconnect: true,
+  //     reconnectTries: Number.MAX_VALUE,
+  //     bufferMaxEntries: 0,
+  //     // mongoose 验证
+  //     auth: { authSource: 'admin' },
+  //     user: 'novias',
+  //     pass: '123456',
+  //   },
+  // };
 
   config.jwt = {
     secret: 'Gernerate_M',
